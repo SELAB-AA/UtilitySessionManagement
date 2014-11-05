@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://java.sun.com/xml/ns/javaee"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+        metadata-complete="true"
+        version="3.0">
+
+    <servlet>
+        <servlet-name>VaadinApp</servlet-name>
+        <servlet-class>com.vaadin.server.PersistenceStorageServlet</servlet-class>
+        <init-param>
+            <param-name>UI</param-name>
+            <param-value>app.AddressBookUI</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet>
+        <servlet-name>SessionId</servlet-name>
+        <servlet-class>app.BenchmarkServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>Graph</servlet-name>
+        <servlet-class>org.perf4j.logback.servlet.GraphingServlet</servlet-class>
+        <init-param>
+            <param-name>graphNames</param-name>
+            <param-value>meanExecutionTime</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>VaadinApp</servlet-name>
+        <url-pattern>/vaadin/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>VaadinApp</servlet-name>
+        <url-pattern>/VAADIN/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>SessionId</servlet-name>
+        <url-pattern>/session/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Graph</servlet-name>
+        <url-pattern>/graph/*</url-pattern>
+    </servlet-mapping>
+
+    <!--
+        The time in minutes before a session is
+        timed out and removed from main memory.
+    -->
+    <session-config>
+        <session-timeout>10</session-timeout>
+    </session-config>
+
+    <!--
+        Session cookie max age (in seconds).
+    -->
+    <context-param>
+        <param-name>org.eclipse.jetty.servlet.MaxAge</param-name>
+        <param-value>3600</param-value>
+    </context-param>
+
+    <!--
+        Set the SessionStorage class.
+    -->
+    <context-param>
+        <param-name>session-storage</param-name>
+        <param-value>core.storage.FileSessionStorage</param-value>
+    </context-param>
+
+    <!--
+        Set the SessionSerializer class.
+    -->
+    <context-param>
+        <param-name>session-serializer</param-name>
+        <param-value>core.storage.serializer.JavaSerializer</param-value>
+    </context-param>
+
+    <!--
+        Set the StreamCompressor class.
+    -->
+    <context-param>
+        <param-name>session-compressor</param-name>
+        <param-value>core.storage.compressor.SnappyCompressor</param-value>
+    </context-param>
+
+    <!--
+        Set the SessionOptimizer class.
+    -->
+    <context-param>
+        <param-name>session-optimizer</param-name>
+        <param-value>core.optimizer.alg.GreedyOptimizer</param-value>
+    </context-param>
+
+    <!--
+        Set the Transform class.
+    -->
+    <context-param>
+        <param-name>session-data-transform</param-name>
+        <param-value>core.transform.GreaterRandomValueChange</param-value>
+    </context-param>
+
+    <!--
+        Set the session initial value.
+    -->
+    <!-- Ratio2 -->
+    <context-param>
+        <param-name>session-initial-value</param-name>
+        <param-value>0.0108036</param-value>
+    </context-param>
+    <!-- Ratio10 -->
+    <!--
+    <context-param>
+        <param-name>session-initial-value</param-name>
+        <param-value>0.054018</param-value>
+    </context-param>
+    -->
+    <!--
+        Set the minimum interval (in seconds) at which the persist
+        method is called.
+    -->
+    <context-param>
+        <param-name>session-persist-period</param-name>
+        <param-value>30</param-value>
+    </context-param>
+
+    <!--
+       Set the minimum interval (in seconds) at which the scavenge
+       method is called.
+    -->
+    <context-param>
+        <param-name>session-scavenge-period</param-name>
+        <param-value>30</param-value>
+    </context-param>
+
+</web-app>

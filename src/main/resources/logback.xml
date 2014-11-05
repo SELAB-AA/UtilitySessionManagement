@@ -1,0 +1,130 @@
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <encoder>
+            <Pattern>%d{HH:mm:ss.SSS} [%-5level] [%logger{36}] - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <file>logs/system.log</file>
+        <encoder>
+            <Pattern>%date [%-5level] [%logger{36}] - %msg%n</Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/system.%d{yyyy-MM-dd}.log</FileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+        <file>logs/error.log</file>
+        <encoder>
+            <Pattern>%date [%-5level] [%logger{36}] - %msg%n</Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/error.%d{yyyy-MM-dd}.log</FileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="STATS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <file>logs/statistics.csv</file>
+        <encoder>
+            <Pattern>%d{HH:mm:ss.SSS} %msg%n</Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/statistics.%d{yyyy-MM-dd}.csv</FileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="BANDWIDTH" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <file>logs/bandwidth.csv</file>
+        <encoder>
+            <Pattern>%d{HH:mm:ss.SSS} %msg%n</Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/bandwidth.%d{yyyy-MM-dd}.csv</FileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="PINGPONG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <file>logs/pingpong.csv</file>
+        <encoder>
+            <Pattern>%d{HH:mm:ss.SSS} %msg%n</Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/pingpong.%d{yyyy-MM-dd}.csv</FileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="core">
+        <level value="INFO"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="ERROR"/>
+    </logger>
+
+    <logger name="statistics" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="STATS"/>
+    </logger>
+
+    <logger name="bandwidth" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="BANDWIDTH"/>
+    </logger>
+
+    <logger name="pingpong" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="PINGPONG"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+    <!-- Perf4J -->
+    <appender name="performanceFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>logs/performance.log</File>
+        <encoder>
+            <Pattern>%msg%n</Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/performance.%d{yyyy-MM-dd}.log</FileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="meanExecutionTime" class="org.perf4j.logback.GraphingStatisticsAppender">
+        <!-- Possible GraphTypes are Mean, Min, Max, StdDev, Count and TPS -->
+        <param name="GraphType" value="Mean"/>
+        <param name="TagNamesToGraph" value="LOAD, OPTIMIZATION, RELOCATION"/>
+    </appender>
+
+    <appender name="CoalescingStatistics" class="org.perf4j.logback.AsyncCoalescingStatisticsAppender">
+        <param name="TimeSlice" value="60000"/>
+        <appender-ref ref="performanceFileAppender"/>
+        <appender-ref ref="meanExecutionTime"/>
+    </appender>
+
+    <logger name="org.perf4j.TimingLogger" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="CoalescingStatistics"/>
+    </logger>
+
+</configuration>
