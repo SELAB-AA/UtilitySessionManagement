@@ -7,7 +7,7 @@
 
 About
 ------
-- Jetty with a custom session manager that optimizes session core.storage between a local and a remote session store.
+- Jetty with a custom session manager that optimizes session storage between a local and a remote session store.
 - Works with Vaadin 7.1.1 using mrosin's PersistenceUIInithandler
 - Main configuration in web.xml, storageConf and amazonConf files.
 - Run with: mvn clean compile exec:java (requires Maven)
