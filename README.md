@@ -1,4 +1,4 @@
-A﻿Utility-Based Session Management System, integrated with Jetty 
+An Utility-Based Session Management System for Jetty 
 ===============================================================
 - Program Author: Sebastian Lindholm, design by Benjamin Byholm, Ivan Porres
 - Developed in the context of the TIVIT Digital Services Program http://www.digital-services.fi
